@@ -45,7 +45,7 @@ export default function MovieListScreen({ navigation, route }) {
     };
 
     let meetsSearchCriteria = item.title.toLowerCase().includes(search.toLowerCase());
-    let meetsActorsCriteria = actors.length === 0 || overlapFound(actors, item.actors);
+    let meetsActorsCriteria = overlapFound(actors, item.actors);
 
     if (meetsSearchCriteria && meetsActorsCriteria) {
       return (
