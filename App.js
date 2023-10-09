@@ -27,19 +27,19 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MovieListScreen">
+      <Stack.Navigator>
         <Stack.Screen
-          name="MovieListScreen"
+          name="MovieList"
           component={MovieListScreen}
           options={{ title: "Movie List" }}
         />
         <Stack.Screen
-          name="MovieDetailScreen"
+          name="MovieDetail"
           component={MovieDetailScreen}
           options={{ title: "About This Movie" }}
         />
         <Stack.Screen
-          name="MovieFilterScreen"
+          name="MovieFilter"
           component={MovieFilterScreen}
           options={{ title: "Filter Actors" }}
         />

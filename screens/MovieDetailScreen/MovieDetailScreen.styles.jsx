@@ -37,8 +37,8 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   moviePoster: {
-    width: "10%",
-    aspectRatio: 2 / 3,
+    width: "10%", // Adjust the width as needed
+    aspectRatio: 2 / 3, // Adjust the aspect ratio as needed
     alignSelf: "center",
     marginVertical: 20,
   },
