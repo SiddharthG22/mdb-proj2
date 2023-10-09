@@ -14,18 +14,30 @@ export default function MovieListScreen({ navigation, route }) {
   const [actors, setActors] = useState([]);
 
   // TODO: Fill out the methods below.
-  const selectedMovie = (movieItem) => {};
+  const selectedMovie = (movieItem) => {
+    navigation.navigate("MovieDetailScreen", { movieItem });
+  };
 
-  const selectedFilterButton = () => {};
+  const selectedFilterButton = () => {
+    navigation.navigate("MovieFilterScreen", { allActors: actors });
+  };
 
   useEffect(
     () => {
       // TODO: Add a "Filter" button to the right bar button.
       // It should lead to the MovieFilterScreen, and pass the "actors" state
       // variable as a parameter.
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity onPress={selectedFilterButton}>
+            <Text style={styles.button}>Filter</Text>
+          </TouchableOpacity>
+        ),
+      });
     },
     [
       /* TODO: Insert dependencies here. */
+      navigation, actors
     ]
   );
 
@@ -35,10 +47,14 @@ export default function MovieListScreen({ navigation, route }) {
           See https://reactnavigation.org/docs/params/#passing-params-to-a-previous-screen
           for an example of how to send data BACKWARDS in the navigation stack.
       */
+        if (route.params?.selectedActors) {
+          setActors(route.params?.selectedActors);
+        }
     },
     [
       /* TODO: Insert dependencies here. What variable changes 
         when we come back from the filter screen? */
+        route.params?.selectedActors
     ]
   );
 
@@ -55,11 +71,26 @@ export default function MovieListScreen({ navigation, route }) {
     };
 
     // TODO: Set up search & filter criteria.
-    let meetsSearchCriteria = true;
-    let meetsActorsCriteria = true;
+    const meetsSearchCriteria = item.title.toLowerCase().includes(search.toLowerCase());
+    const meetsActorsCriteria = actors.length === 0 || overlapFound(actors, item.actors);
 
     if (meetsSearchCriteria && meetsActorsCriteria) {
-      // TODO: Return a MovieCell, wrapped by a TouchableOpacity so we can handle taps.
+      return (
+        <TouchableOpacity onPress={() => selectedMovie(item)}>
+          <View style={styles.movieCell}>
+            <Image
+              source={{ uri: item.posterurl }}
+              style={styles.movieCellImage}
+            />
+            <View style={styles.movieCellRight}>
+              <Text style={styles.movieCellTitle}>{item.title}</Text>
+              <Text style={styles.movieCellSubtitle}>
+                Actors: {item.actors.join(", ")}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      );
     } else {
       // If the item doesn't meet search/filter criteria, then we can
       // simply return null and it won't be rendered in the list!
@@ -73,7 +104,17 @@ export default function MovieListScreen({ navigation, route }) {
     <SafeAreaView style={styles.container}>
       {/* TODO: Add a SearchBar: https://reactnativeelements.com/docs/searchbar/.
                 The third-party package should already be installed for you. */}
+      <SearchBar
+        placeholder="Search"
+        onChangeText={(text) => setSearch(text)}
+        value={search}
+      />
       {/* TODO: Add a FlatList: https://reactnative.dev/docs/flatlist */}
+      <FlatList
+        data={TABLE_DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </SafeAreaView>
   );
 }

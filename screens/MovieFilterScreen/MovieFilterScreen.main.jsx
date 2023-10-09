@@ -24,9 +24,13 @@ export default function MovieFilterScreen({ navigation, route }) {
     () => {
       // TODO: Recieve actors passed by MovieListScreen here, and update
       // our local state using setActors.
+      if (route.params?.allActors) {
+        setActors(route.params?.allActors)
+      }
     },
     [
       /* TODO: Insert dependent variables here. */
+      route.params?.allActors
     ]
   );
 
@@ -37,9 +41,21 @@ export default function MovieFilterScreen({ navigation, route }) {
       //  2) Show a "Done" button on the right that navigates back to the MovieListScreen
       //      and passes back our current list of actors via params.
       // https://reactnavigation.org/docs/header-buttons/
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("MovieListScreen", { selectedActors: actors });
+            }}
+          >
+            <Text style={styles.filtercell}>Done</Text>
+          </TouchableOpacity>
+        ),
+      });
     },
     [
       /* TODO: Insert dependent state variables here. */
+      actors, navigation
     ]
   );
 

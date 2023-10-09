@@ -36,4 +36,10 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
   },
+  moviePoster: {
+    width: "10%",
+    aspectRatio: 2 / 3,
+    alignSelf: "center",
+    marginVertical: 20,
+  },
 });
